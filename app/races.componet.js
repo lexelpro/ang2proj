@@ -9,20 +9,32 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var races_componet_1 = require("./races.componet");
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Ultra Racing';
+var mocks_1 = require('./mocks');
+var RacesComponent = (function () {
+    function RacesComponent() {
     }
-    AppComponent = __decorate([
+    RacesComponent.prototype.ngOnInit = function () {
+        this.races = mocks_1.RACES;
+    };
+    RacesComponent.prototype.totalCost = function () {
+        var sum = 0;
+        for (var _i = 0, _a = this.races; _i < _a.length; _i++) {
+            var race = _a[_i];
+            if (race.isRacing) {
+                sum += race.entryFee;
+            }
+        }
+        return sum;
+    };
+    RacesComponent = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            template: "<h1>{{title}}</h1>\n               <races> </races>",
-            directives: [races_componet_1.RacesComponent]
+            selector: 'races',
+            templateUrl: 'app/races.component.html',
+            styleUrls: ['app/races.component.css']
         }), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], RacesComponent);
+    return RacesComponent;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.RacesComponent = RacesComponent;
+//# sourceMappingURL=races.componet.js.map
