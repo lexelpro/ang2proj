@@ -9,32 +9,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var mocks_1 = require('./mocks');
+var race_service_1 = require('./race.service');
 var RacesComponent = (function () {
-    function RacesComponent() {
+    function RacesComponent(raceService) {
+        this.raceService = raceService;
+        this.heading = "Ultra Racing Schedule";
+        this.cash = 10000;
     }
     RacesComponent.prototype.ngOnInit = function () {
-        this.races = mocks_1.RACES;
+        var _this = this;
+        this.raceService.getRaces()
+            .subscribe(function (races) { return _this.races = races; });
     };
     RacesComponent.prototype.totalCost = function () {
         var sum = 0;
-        for (var _i = 0, _a = this.races; _i < _a.length; _i++) {
-            var race = _a[_i];
-            if (race.isRacing) {
-                sum += race.entryFee;
+        if (this.races) {
+            for (var _i = 0, _a = this.races; _i < _a.length; _i++) {
+                var race = _a[_i];
+                if (race.isRacing)
+                    sum += race.entryFee;
             }
         }
         return sum;
     };
+    RacesComponent.prototype.castDate = function (date) {
+        return new Date(date);
+    };
+    RacesComponent.prototype.cashLeft = function () {
+        return this.cash - this.totalCost();
+    };
+    RacesComponent.prototype.enterRace = function (race) {
+        if (this.cashLeft() > race.entryFee) {
+            race.isRacing = true;
+        }
+        else {
+            alert("You don't have enough cash");
+        }
+    };
+    RacesComponent.prototype.cancelRace = function (race) {
+        race.isRacing = false;
+    };
     RacesComponent = __decorate([
         core_1.Component({
-            selector: 'races',
+            selector: 'my-races',
             templateUrl: 'app/races.component.html',
             styleUrls: ['app/races.component.css']
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [race_service_1.RaceService])
     ], RacesComponent);
     return RacesComponent;
 }());
 exports.RacesComponent = RacesComponent;
-//# sourceMappingURL=races.componet.js.map
+//# sourceMappingURL=races.component.js.map

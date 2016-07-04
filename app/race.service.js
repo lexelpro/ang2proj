@@ -9,23 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var races_component_1 = require('./races.component');
-var race_service_1 = require('./race.service');
 var http_1 = require('@angular/http');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.heading = "Ultra Racing Schedule";
+require('rxjs/add/operator/map');
+var RaceService = (function () {
+    function RaceService(http) {
+        this.http = http;
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            selector: 'my-app',
-            template: "\n    <header>\n      <h1>{{heading}}</h1>\n    </header>\n    <my-races></my-races>\n",
-            directives: [races_component_1.RacesComponent],
-            providers: [race_service_1.RaceService, http_1.HTTP_PROVIDERS]
-        }), 
-        __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ;
+    RaceService.prototype.getRaces = function () {
+        return this.http.get('app/races.json')
+            .map(function (response) { return response.json().racesData; });
+    };
+    RaceService = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
+    ], RaceService);
+    return RaceService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.RaceService = RaceService;
+//# sourceMappingURL=race.service.js.map
